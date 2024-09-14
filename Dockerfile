@@ -1,20 +1,15 @@
-# Base image
-FROM python:3.12
+FROM python:3.9-alpine
 
-# Set the working directory inside the container
-WORKDIR /app
+WORKDIR /flask_app
 
-# Copy the requirements file
 COPY requirements.txt .
 
-# Install the project dependencies
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code into the container
-COPY . .
+RUN pip install pytest
 
-# Expose the port the Flask application will be listening on
-EXPOSE 5000
+COPY app/ .
 
-# Run the Flask application
-CMD ["python", "app.py"]
+COPY tests/ app/tests/
+
+CMD [ "python", "app.py" ]
